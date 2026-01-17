@@ -1,0 +1,55 @@
+<!doctype html>
+<html lang="ko">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+  <title>Typebot Popup</title>
+  <style>
+    body { margin:0; font-family: system-ui, -apple-system, "Noto Sans KR", sans-serif; }
+    .wrap { max-width:720px; margin:0 auto; padding:16px; }
+    button { width:100%; padding:14px; font-size:16px; border-radius:10px; border:0; background:#111; color:#fff; }
+    .sp { height:12px; }
+  </style>
+</head>
+<body>
+  <div class="wrap">
+    <button id="openTypebot">설문 시작하기</button>
+    <div class="sp"></div>
+    <button id="backToKakao">오픈채팅방으로 돌아가기</button>
+  </div>
+
+  <script type="module">
+    import Typebot from "https://cdn.jsdelivr.net/npm/@typebot.io/js@0/dist/web.js";
+
+    // 1) 팝업을 “준비”만 해둠 (여기서 바로 열리진 않음)
+    Typebot.initPopup({
+      typebot: "1-3y9ia3w",
+      // autoShowDelay: 3000, // 자동오픈 원하면(카톡/iOS에선 비추천)
+    });
+
+    // 2) 버튼 클릭에서 팝업 “열기”
+    document.getElementById("openTypebot").addEventListener("click", (e) => {
+      e.preventDefault();
+      Typebot.open(); // ✅ 이게 핵심
+    });
+  </script>
+
+  <script>
+    const OPENCHAT_URL = "https://open.kakao.com/o/gEQV686h";
+
+    function isKakaoInApp() {
+      return /kakaotalk/i.test(navigator.userAgent);
+    }
+
+    document.getElementById("backToKakao").addEventListener("click", () => {
+      location.href = OPENCHAT_URL;
+
+      if (isKakaoInApp()) {
+        setTimeout(() => {
+          location.href = "kakaotalk://inappbrowser/close";
+        }, 700);
+      }
+    });
+  </script>
+</body>
+</html>
